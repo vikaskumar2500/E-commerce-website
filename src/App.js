@@ -1,6 +1,12 @@
 import "./App.css";
+import CartItem from "./components/Cart/CartItem";
+import Header from "./components/Header/Header";
+import ProductItems from "./components/Layout/ProductItems";
+import React, {useState} from "react";
 
 const App = () => {
+  const [showCart, setShowCart] = useState(false);
+
   const productsArr = [
     {
       title: "Colors",
@@ -38,21 +44,17 @@ const App = () => {
         "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
     },
   ];
+
+  const cartButtonHandler=(show)=> {
+    setShowCart(show);
+  }
+
   return (
     <div>
+      <Header onCart={cartButtonHandler}/>
       <h1>COLORS</h1>
-      <ul>
-        {productsArr.map((product) => (
-          <li key={product.title}>
-            <h2>{product.title}</h2>
-            <img src={product.imageUrl} alt="images not found" />
-            <div className="info">
-              <div>${product.price}</div>
-              <button type="button">Add To Cart</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <ProductItems products={productsArr}/>
+      {showCart && <CartItem onCancel={cartButtonHandler}/>}
     </div>
   );
 };

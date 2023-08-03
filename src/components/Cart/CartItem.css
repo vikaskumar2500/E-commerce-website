@@ -1,0 +1,29 @@
+.cart-items {
+  border: 3px solid red;
+  max-width: 30rem;
+  
+}
+.cart-items>li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.cart-image {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.cart-image>img {
+  width: 100px;
+}
+
+.cart-quantity {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.cart-quantity > input {
+  width: 3rem;
+}

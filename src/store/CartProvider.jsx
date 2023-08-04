@@ -1,47 +1,63 @@
+import { useReducer } from "react";
 import MyContext from "./MyContext";
-import React, { useState } from "react";
-import {v4 as uuidv4} from 'uuid';
 
-const cartElements = [
-  {
-    id: uuidv4(),
-    title: "Colors",
-    price: 100,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-    quantity: 2,
-  },
+const defaultState = {
+  cartItems: [],
+  totalPrice: 0,
+};
 
-  {
-    id: uuidv4(),
-    title: "Black and white Colors",
-    price: 50,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-    quantity: 3,
-  },
+const cartReducer = (state, action) => {
+  if (action.type === "ADD") {
+    const cartItemIndex = state.cartItems.findIndex(
+      (item) => item.id === action.item.id
+    );
 
-  {
-    id: uuidv4(),
-    title: "Yellow and Black Colors",
-    price: 70,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
+    if (cartItemIndex !== -1) {
+      state.cartItems[cartItemIndex].amount += 1;
+      return {
+        cartItems: state.cartItems,
+        totalPrice: state.totalPrice + action.item.price,
+      };
+    } else {
+      return {
+        cartItems: [action.item, ...state.cartItems],
+        totalPrice: state.totalPrice + action.item.price,
+      };
+    }
+  } else if (action.type === "DELETE") {
+    const cartItemIndex = state.cartItems.findIndex(
+      (item) => item.id === action.id
+    );
 
-    quantity: 1,
-  },
-];
+    return {
+      cartItems: state.cartItems.filter(
+        (cartItem) => cartItem.id !== action.id
+      ),
+      totalPrice:
+        state.totalPrice -
+        state.cartItems[cartItemIndex].price *
+          state.cartItems[cartItemIndex].amount,
+    };
+  } else return defaultState;
+};
 
 const CartProvider = (props) => {
-  const [cartItems, setCartItems] = useState(cartElements);
+  const [cartState, dispatchedCart] = useReducer(cartReducer, defaultState);
+
+  const addCartItemHandler = (cartItem) => {
+    dispatchedCart({ type: "ADD", item: cartItem });
+  };
 
   const deleteCartItemHandler = (id) => {
-    setCartItems((prevState) => {
-      return prevState.filter((item) => item.id !== id);
-    });
+    dispatchedCart({ type: "DELETE", id: id });
   };
 
   return (
     <MyContext.Provider
       value={{
-        cartItems: cartItems,
+        cartItems: cartState.cartItems,
+        totalPrice: cartState.totalPrice,
+        addCartItem: addCartItemHandler,
         deleteCartItem: deleteCartItemHandler,
       }}
     >

@@ -11,10 +11,11 @@ const CartItem = (props) => {
   };
 
   const removeBtnHandler = (id) => {
+    console.log(id);
     cartCtx.deleteCartItem(id);
   };
 
-  const total_price = cartCtx.cartItems.reduce((total, item) => total + item.price, 0);
+  // const total_price = cartCtx.cartItems.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className="cart-items">
@@ -26,16 +27,17 @@ const CartItem = (props) => {
         X
       </Button>
       <h2>CART</h2>
+      <p className="empty-cart">Cart is empty!! please add items</p>
       <ul className="cart-list">
         {cartCtx.cartItems.map((product) => (
-          <li key={product.title} className="cart-item">
+          <li key={product.id} className="cart-item">
             <span className="cart-image">
               <img src={product.imageUrl} alt="not found" />
               <span>{product.title}</span>
             </span>
             <span className="cart-price">{product.price}</span>
             <span className="cart-quantity">
-              <input type="text" defaultValue={1} />
+              <input type="text" value={product.amount} readOnly/>
               <Button
                 variant="outline-danger"
                 className="mx-2"
@@ -50,7 +52,7 @@ const CartItem = (props) => {
       <hr />
       <div className="total-price">
         <h2>Total</h2>
-        <span>${total_price}</span>
+        <span>${cartCtx.totalPrice.toFixed(2)}</span>
       </div>
       <Button variant="primary" className="btn purchaseBtn">
         Purchase

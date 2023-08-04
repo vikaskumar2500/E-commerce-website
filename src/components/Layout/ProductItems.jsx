@@ -1,7 +1,18 @@
 import { Button } from "react-bootstrap";
 import "./ProductItems.css";
+import { useContext } from "react";
+import MyContext from "../../store/MyContext";
 
 const ProductItems = (props) => {
+  const cartCtx = useContext(MyContext);
+
+  const buttonHandler = (item) => {
+    cartCtx.addCartItem({
+      ...item,
+      amount: 1,
+    });
+  };
+
   return (
     <ul className="product-items">
       {props.products.map((product) => (
@@ -10,8 +21,12 @@ const ProductItems = (props) => {
           <img src={product.imageUrl} alt="images not found" />
           <div className="info">
             <div>${product.price}</div>
-            {/* <button type="button">Add To Cart</button> */}
-            <Button variant="secondary">Add To Cart</Button>{' '}
+            <Button
+              variant="secondary"
+              onClick={buttonHandler.bind(null, product)}
+            >
+              Add To Cart
+            </Button>
           </div>
         </li>
       ))}

@@ -105,3 +105,10 @@ hr {
 .cart-list::-webkit-scrollbar {
   overflow: hidden;
 }
+
+.empty-cart {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: brown;
+  text-align: center;
+}

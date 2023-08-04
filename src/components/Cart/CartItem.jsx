@@ -1,61 +1,60 @@
 import "./CartItem.css";
+import { Button } from "react-bootstrap";
+import { useContext } from "react";
+import MyContext from "../../store/MyContext";
 
 const CartItem = (props) => {
-  const cartElements = [
-    {
-      title: "Colors",
-      price: 100,
-      imageUrl:
-        "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-      quantity: 2,
-    },
+  const cartCtx = useContext(MyContext);
 
-    {
-      title: "Black and white Colors",
-      price: 50,
-      imageUrl:
-        "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-      quantity: 3,
-    },
-
-    {
-      title: "Yellow and Black Colors",
-      price: 70,
-      imageUrl:
-        "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-
-      quantity: 1,
-    },
-  ];
-
-  const cancelBtnHandler=()=> {
+  const cancelBtnHandler = () => {
     props.onCancel(false);
-  }
+  };
+
+  const removeBtnHandler = (id) => {
+    cartCtx.deleteCartItem(id);
+  };
+
+  const total_price = cartCtx.cartItems.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className="cart-items">
-      <h1>CART</h1>
-      <button type="button" className="cancel-btn" onClick={cancelBtnHandler}>X</button>
-      <ul>
-        {cartElements.map((product) => (
-          <li key={product.title}>
+      <Button
+        variant="secondary"
+        className="btn cancel"
+        onClick={cancelBtnHandler}
+      >
+        X
+      </Button>
+      <h2>CART</h2>
+      <ul className="cart-list">
+        {cartCtx.cartItems.map((product) => (
+          <li key={product.title} className="cart-item">
             <span className="cart-image">
               <img src={product.imageUrl} alt="not found" />
               <span>{product.title}</span>
             </span>
             <span className="cart-price">{product.price}</span>
             <span className="cart-quantity">
-              <input type="text" value={1} />
-              <button type="button">REMOVE</button>
+              <input type="text" defaultValue={1} />
+              <Button
+                variant="outline-danger"
+                className="mx-2"
+                onClick={removeBtnHandler.bind(null, product.id)}
+              >
+                REMOVE
+              </Button>
             </span>
           </li>
         ))}
       </ul>
+      <hr />
       <div className="total-price">
         <h2>Total</h2>
-        <span>35</span>
+        <span>${total_price}</span>
       </div>
-      <button type="button" className="btn purchase-btn">Purchase</button>
+      <Button variant="primary" className="btn purchaseBtn">
+        Purchase
+      </Button>
     </div>
   );
 };

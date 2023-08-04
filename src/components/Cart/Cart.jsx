@@ -1,10 +1,18 @@
 import "./Cart.css";
+import { useContext } from "react";
+import MyContext from "../../store/MyContext";
 
-const Cart = () => {
+const Cart = (props) => {
+  const cartCtx = useContext(MyContext);
+
+  const cartBtnHandler=()=> {
+    props.onCart(true);
+  }
+
   return (
-    <a href="#cart" className="cart-holder">
+    <a href="#cart" className="cart-holder" onClick={cartBtnHandler}>
       Cart
-      <span className="cart-number">0</span>
+      <span className="cart-number">{cartCtx.cartItems.length}</span>
     </a>
   );
 };

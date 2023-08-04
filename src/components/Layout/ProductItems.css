@@ -1,4 +1,4 @@
-ul {
+.product-items {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -6,12 +6,12 @@ ul {
   
 }
 
-li {
+.product-item {
   list-style: none;
   margin: 30px;
 }
 
-li > h2 {
+.product-item > h2 {
   text-align: center;
 }
 
@@ -26,11 +26,11 @@ h1 {
   margin-top: 1rem;
 }
 
-button {
+/* button {
   padding: 0.5rem 1.5rem;
   background-color:#56CCF2;
   font-size: 1.1rem;
   border-radius: 25px;
   border: none;
 
-}
+} */

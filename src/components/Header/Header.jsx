@@ -1,7 +1,8 @@
 import Cart from "../Cart/Cart";
 import "./Header.css";
 
-const Header = () => {
+const Header = (props) => {
+  // console.log(props.onCart);
   return (
     <header>
       <ul className="header">
@@ -14,7 +15,7 @@ const Header = () => {
         <li>
           <a href="#about">ABOUT</a>
         </li>
-        <Cart/>
+        <Cart onCart={props.onCart}/>
       </ul>
     </header>
   );

@@ -7,7 +7,6 @@
   list-style-type: none;
   border-bottom: 0.1rem solid white;
   position: fixed;
-  /* top: -1.18rem; */
   background: black;
   width: 100%;
   z-index: 1;
@@ -22,11 +21,9 @@ a:link {
   color: white;
 }
 
-/* header {
-  text-align: center;
-  margin: 0;
-  padding: 0px;
-  padding-bottom: 30px;
-  background: #777;
-  color: white;
-} */
+a:hover,
+a:active {
+  color: brown;
+  text-decoration: underline;
+}
+

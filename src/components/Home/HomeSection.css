@@ -1,0 +1,29 @@
+section {
+  opacity: 0.6;
+}
+section h2 {
+  font-family:"Metal Mania";
+  text-align: center;
+  padding: 20px;
+  font-size: 25px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.tours {
+  width: 20rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tour-item {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  padding: 10px;
+  border-bottom: 1px solid black;
+}

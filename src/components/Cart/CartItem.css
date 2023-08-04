@@ -6,7 +6,6 @@
   top: 90px;
   background-color: white;
   animation: slideDown 300ms ease-out;
-
 }
 
 @keyframes slideDown {

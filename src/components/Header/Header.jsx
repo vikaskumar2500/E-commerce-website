@@ -1,3 +1,4 @@
+import { NavLink, NavLinkk } from "react-router-dom";
 import Cart from "../Cart/Cart";
 import "./Header.css";
 
@@ -7,15 +8,22 @@ const Header = (props) => {
     <header>
       <ul className="header">
         <li>
-          <a href="#home">HOME</a>
+          <NavLink to="/Home">HOME</NavLink>
         </li>
         <li>
-          <a href="#store">STORE</a>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? "active" : undefined)}
+          >
+            STORE
+          </NavLink>
         </li>
         <li>
-          <a href="#about">ABOUT</a>
+          <NavLink to="https://prasadyash2411.github.io/ecom-website/about.html">
+            ABOUT
+          </NavLink>
         </li>
-        <Cart onCart={props.onCart}/>
+        <Cart onCart={props.onCart} />
       </ul>
     </header>
   );

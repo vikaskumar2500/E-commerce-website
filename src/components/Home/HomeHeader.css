@@ -1,0 +1,42 @@
+header {
+  position: relative;
+  text-align: center;
+  margin: 0;
+  padding: 0px;
+  padding-bottom: 30px;
+  background: #777;
+  color: white;
+  /* top: 3rem; */
+}
+
+header > h1 {
+  padding: 40px;
+  font-size: 100px;
+}
+
+header .latest-album {
+  position: relative;
+  display: block;
+  border: 1px solid #56ccf2;
+  padding: 15px 30px;
+  font-size: 23px;
+  font-weight: 200;
+  margin: 10px auto;
+  background: inherit;
+  cursor: pointer;
+  color: white;
+}
+
+header .play-button {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  border: 2px solid #56ccf2;
+  border-radius: 50%;
+  padding: 15px 22px;
+  font-size: 30px;
+  font-weight: 200;
+  margin: 20px auto;
+  background: inherit;
+  color: #56ccf2;
+}

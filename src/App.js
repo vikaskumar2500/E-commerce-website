@@ -1,9 +1,12 @@
 import "./App.css";
-import CartItem from "./components/Cart/CartItem";
-import Header from "./components/Header/Header";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import RootLayOut from "./Root/Root";
 import ProductItems from "./components/Layout/ProductItems";
-import React, { useState } from "react";
+import CartItem from "./components/Cart/CartItem";
 import { v4 as uuidv4 } from "uuid";
+import React, { useState } from "react";
+import Header from "./components/Header/Header";
+import Home from "./components/Home/Home";
 
 const App = () => {
   const [showCart, setShowCart] = useState(false);
@@ -46,13 +49,42 @@ const App = () => {
     setShowCart(show);
   };
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayOut />,
+      children: [
+        {
+          path: "/",
+          element: (
+            <>
+              <h1>COLORS</h1>
+              <ProductItems products={productsArr} />
+              {showCart && <CartItem onCancel={cartButtonHandler} />}
+            </>
+          ),
+        },
+        {
+          path: "/Home",
+          element:<Home/>,
+        },
+        
+
+        {
+          path: "https://prasadyash2411.github.io/ecom-website/about.html",
+        },
+      ],
+    },
+  ]);
+
   return (
-    <div>
-      <Header onCart={cartButtonHandler} />
-      <h1>COLORS</h1>
-      <ProductItems products={productsArr} />
-      {showCart && <CartItem onCancel={cartButtonHandler} />}
-    </div>
+    <RouterProvider router={router} />
+    // <div>
+    //   <Header onCart={cartButtonHandler} />
+    //   <h1>COLORS</h1>
+    //   <ProductItems products={productsArr} />
+    //   {showCart && <CartItem onCancel={cartButtonHandler} />}
+    // </div>
   );
 };
 

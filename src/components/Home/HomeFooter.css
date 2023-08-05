@@ -1,7 +1,10 @@
-.home-footer {
+footer {
   margin-top: 40px;
   padding: 20px;
   background: #56ccf2;
+  
+}
+footer>h2 {
   font-size: 3rem;
   text-align: center;
   font-weight: bold;

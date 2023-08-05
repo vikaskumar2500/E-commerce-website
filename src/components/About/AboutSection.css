@@ -1,0 +1,26 @@
+
+.about-section {
+  opacity: 1;
+  margin: 1rem;
+}
+.contents {
+  width: 70%;
+  margin: 1rem auto;
+
+}
+
+.contents > img {
+  float: left;
+  margin: 20px 200px;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  margin-right: 2rem;
+  margin-left: 4rem;
+}
+
+.contents > p {
+  font-size: 17px;
+  margin: 20px;
+  color: #777;
+}

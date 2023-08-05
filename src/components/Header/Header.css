@@ -1,29 +1,34 @@
 .header {
+  position: fixed;
+  background-color: rgb(19, 19, 17);
   display: flex;
-  padding: 10px;
+  justify-content:space-around;
+  align-items: center;
+  display: flex;
+  padding: 15px;
   font-size: 18px;
   font-weight: 200;
   justify-content: center;
   list-style-type: none;
-  border-bottom: 0.1rem solid white;
-  position: fixed;
-  background: black;
   width: 100%;
   z-index: 1;
-  
+  top: 0%;
+  left: 0%;
+  border-bottom: 0.1rem solid white;
 }
 
 li {
   margin: 0px 40px;
+  color: black;
 }
+
 a:link {
   text-decoration: none;
-  color: white;
+  font-weight: 600;
 }
 
 a:hover,
 a:active {
-  color: brown;
+  color: rgb(247, 20, 20);
   text-decoration: underline;
 }
-

@@ -1,4 +1,4 @@
-header {
+.home-header {
   position: relative;
   text-align: center;
   margin: 0;
@@ -9,12 +9,12 @@ header {
   /* top: 3rem; */
 }
 
-header > h1 {
+.home-header > h1 {
   padding: 40px;
   font-size: 100px;
 }
 
-header .latest-album {
+.home-header .latest-album {
   position: relative;
   display: block;
   border: 1px solid #56ccf2;
@@ -27,7 +27,7 @@ header .latest-album {
   color: white;
 }
 
-header .play-button {
+.home-header .play-button {
   position: relative;
   cursor: pointer;
   display: block;

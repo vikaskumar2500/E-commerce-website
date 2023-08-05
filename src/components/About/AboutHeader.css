@@ -1,0 +1,14 @@
+.about-header {
+  position: relative;
+  text-align: center;
+  margin: 0;
+  padding: 0px;
+  padding-bottom: 30px;
+  background: #777;
+  color: white;
+}
+
+.about-header > h1 {
+  padding: 40px;
+  font-size: 100px;
+}

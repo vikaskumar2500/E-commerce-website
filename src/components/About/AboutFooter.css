@@ -1,0 +1,17 @@
+.about-footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 15rem;
+}
+.contact-info>a>img{
+  width: 2rem;
+  border-radius: 50% inherit;
+}

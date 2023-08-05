@@ -5,8 +5,9 @@ import ProductItems from "./components/Layout/ProductItems";
 import CartItem from "./components/Cart/CartItem";
 import { v4 as uuidv4 } from "uuid";
 import React, { useState } from "react";
-import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
+import About from "./components/About/About";
+import Header from "./components/Header/Header";
 
 const App = () => {
   const [showCart, setShowCart] = useState(false);
@@ -52,28 +53,28 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <RootLayOut />,
+      element: <RootLayOut onCart={cartButtonHandler} products={productsArr} />,
       children: [
         {
-          path: "/",
-          element: (
-            <>
-              <h1>COLORS</h1>
-              <ProductItems products={productsArr} />
-              {showCart && <CartItem onCancel={cartButtonHandler} />}
-            </>
-          ),
-        },
-        {
           path: "/Home",
-          element:<Home/>,
+          element: <Home />,
         },
-        
 
         {
-          path: "https://prasadyash2411.github.io/ecom-website/about.html",
+          path: "/About",
+          element: <About />,
         },
       ],
+    },
+    {
+      path: "/Store",
+      element: (
+        <>
+          <Header onCart={cartButtonHandler} />
+          <ProductItems products={productsArr} />
+          {showCart && <CartItem onCancel={cartButtonHandler} />}
+        </>
+      ),
     },
   ]);
 

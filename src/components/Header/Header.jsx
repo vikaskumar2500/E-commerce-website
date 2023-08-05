@@ -1,30 +1,47 @@
-import { NavLink, NavLinkk } from "react-router-dom";
-import Cart from "../Cart/Cart";
+import { NavLink } from "react-router-dom";
 import "./Header.css";
+import Cart from "../Cart/Cart";
+import { useContext } from "react";
+import MyContext from "../../store/MyContext";
 
 const Header = (props) => {
   // console.log(props.onCart);
+  const cartCtx = useContext(MyContext);
+  const homeLinkHandler = () => {
+    cartCtx.showCartIconHandler(false);
+  };
+  const storeLinkHandler = () => {
+    cartCtx.showCartIconHandler(true);
+  };
+  const aboutLinkHandler = () => {
+    cartCtx.showCartIconHandler(false);
+  };
+
   return (
-    <header>
+    <header >
       <ul className="header">
         <li>
-          <NavLink to="/Home">HOME</NavLink>
+          <NavLink to="/Home" onClick={homeLinkHandler}>
+            HOME
+          </NavLink>
         </li>
         <li>
           <NavLink
-            to="/"
+            to="/Store"
             className={({ isActive }) => (isActive ? "active" : undefined)}
+            onClick={storeLinkHandler}
           >
             STORE
           </NavLink>
         </li>
         <li>
-          <NavLink to="https://prasadyash2411.github.io/ecom-website/about.html">
+          <NavLink to="/About" onClick={aboutLinkHandler} varient="light">
             ABOUT
           </NavLink>
         </li>
-        <Cart onCart={props.onCart} />
+        {cartCtx.showCartIcon && <Cart onCart={props.onCart} />}
       </ul>
+      
     </header>
   );
 };

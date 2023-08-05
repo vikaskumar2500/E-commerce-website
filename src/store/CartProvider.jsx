@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import MyContext from "./MyContext";
+import { useState } from "react";
 
 const defaultState = {
   cartItems: [],
@@ -43,6 +44,7 @@ const cartReducer = (state, action) => {
 
 const CartProvider = (props) => {
   const [cartState, dispatchedCart] = useReducer(cartReducer, defaultState);
+  const [showCartIcon, setShowCartIcon] = useState(false);
 
   const addCartItemHandler = (cartItem) => {
     dispatchedCart({ type: "ADD", item: cartItem });
@@ -52,6 +54,10 @@ const CartProvider = (props) => {
     dispatchedCart({ type: "DELETE", id: id });
   };
 
+  const showCartIconHandler=(show)=> {
+    setShowCartIcon(show);
+  }
+
   return (
     <MyContext.Provider
       value={{
@@ -59,6 +65,8 @@ const CartProvider = (props) => {
         totalPrice: cartState.totalPrice,
         addCartItem: addCartItemHandler,
         deleteCartItem: deleteCartItemHandler,
+        showCartIcon: showCartIcon,
+        showCartIconHandler:showCartIconHandler,
       }}
     >
       {props.children}

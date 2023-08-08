@@ -9,39 +9,62 @@ const Header = (props) => {
   const cartCtx = useContext(MyContext);
   const homeLinkHandler = () => {
     cartCtx.showCartIconHandler(false);
+    cartCtx.showContactHelper(false);
   };
   const storeLinkHandler = () => {
     cartCtx.showCartIconHandler(true);
+    cartCtx.showContactHelper(false);
   };
   const aboutLinkHandler = () => {
+    cartCtx.showCartIconHandler(false);
+    cartCtx.showContactHelper(false);
+  };
+  const cantactHelper = () => {
+    cartCtx.showContactHelper(true);
     cartCtx.showCartIconHandler(false);
   };
 
   return (
-    <header >
-      <ul className="header">
+    <header className="header">
+      <ul className="list">
         <li>
-          <NavLink to="/Home" onClick={homeLinkHandler}>
+          <NavLink
+            to="/"
+            activeClassName={isActive => (!isActive ? StyleSheet : "")}
+            onClick={homeLinkHandler}
+          >
             HOME
           </NavLink>
         </li>
         <li>
           <NavLink
             to="/Store"
-            className={({ isActive }) => (isActive ? "active" : undefined)}
+            // activeClassName="active"
             onClick={storeLinkHandler}
           >
             STORE
           </NavLink>
         </li>
         <li>
-          <NavLink to="/About" onClick={aboutLinkHandler} varient="light">
+          <NavLink
+            to="/About"
+            // activeClassName="active"
+            onClick={aboutLinkHandler}
+          >
             ABOUT
           </NavLink>
         </li>
-        {cartCtx.showCartIcon && <Cart onCart={props.onCart} />}
+        <li>
+          <NavLink
+            to="/Contact"
+            // activeClassName="active"
+            onClick={cantactHelper}
+          >
+            CONTACT US
+          </NavLink>
+        </li>
       </ul>
-      
+      <div>{<Cart onCart={props.onCart} />}</div>
     </header>
   );
 };

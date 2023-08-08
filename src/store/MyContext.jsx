@@ -7,6 +7,8 @@ const MyContext = React.createContext({
   deleteCartItem: () => {},
   showCartIcon: null,
   showCartIconHandler: () => {},
+  showContact: null,
+  showContactHelper: () => {},
 });
 
 export default MyContext;

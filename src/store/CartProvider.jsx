@@ -45,6 +45,7 @@ const cartReducer = (state, action) => {
 const CartProvider = (props) => {
   const [cartState, dispatchedCart] = useReducer(cartReducer, defaultState);
   const [showCartIcon, setShowCartIcon] = useState(false);
+  const [showContact, setShowContact] = useState(true);
 
   const addCartItemHandler = (cartItem) => {
     dispatchedCart({ type: "ADD", item: cartItem });
@@ -54,8 +55,12 @@ const CartProvider = (props) => {
     dispatchedCart({ type: "DELETE", id: id });
   };
 
-  const showCartIconHandler=(show)=> {
+  const showCartIconHandler = (show) => {
     setShowCartIcon(show);
+  };
+
+  const showContactHelper=(show)=> {
+    setShowContact(show);
   }
 
   return (
@@ -66,7 +71,9 @@ const CartProvider = (props) => {
         addCartItem: addCartItemHandler,
         deleteCartItem: deleteCartItemHandler,
         showCartIcon: showCartIcon,
-        showCartIconHandler:showCartIconHandler,
+        showCartIconHandler: showCartIconHandler,
+        showContact: showContact,
+        showContactHelper: showContactHelper,
       }}
     >
       {props.children}

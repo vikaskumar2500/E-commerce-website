@@ -1,18 +1,22 @@
+.cart {
+  margin-left:80vw; 
+}
+.hidden {
+  display: none;
+}
+
 .cart-holder {
   position: relative;
   border: 2px solid #56ccf2;
   border-radius: 7px;
-  right: -25rem;
 }
 
 .cart-number {
-  position: absolute;
   color: #56ccf2;
   font-size: 25px;
-  top: -10px;
-  right: -36px;
-  width: 2rem;
-  text-align: center;
-  object-fit: cover;
-  padding: 0;
+}
+
+.cart button {
+  margin-top: 1rem;
+  margin-right: 0.6rem;
 }

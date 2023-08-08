@@ -2,24 +2,38 @@
   position: fixed;
   background-color: rgb(19, 19, 17);
   display: flex;
-  justify-content:space-around;
+  justify-content: space-around;
   align-items: center;
   display: flex;
-  padding: 15px;
   font-size: 18px;
   font-weight: 200;
   justify-content: center;
   list-style-type: none;
-  width: 100%;
+  width: 100vw;
   z-index: 1;
   top: 0%;
   left: 0%;
   border-bottom: 0.1rem solid white;
+  height: 3rem;
+  padding: 2rem 0;
 }
 
-li {
-  margin: 0px 40px;
-  color: black;
+.list {
+  position: fixed;
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+  align-items: center;
+  /* border: 1px solid red; */
+  width: 29rem;
+  margin-left: -10%;
+  gap: 3rem;
+  margin: 1.5rem auto;
+}
+
+a {
+  color: white;
+
 }
 
 a:link {
@@ -27,8 +41,17 @@ a:link {
   font-weight: 600;
 }
 
-a:hover,
-a:active {
+a:hover {
+  text-decoration: underline;
+}
+
+a:active,
+.active {
   color: rgb(247, 20, 20);
   text-decoration: underline;
+}
+
+li a {
+  color: white;
+  width: 5rem;
 }

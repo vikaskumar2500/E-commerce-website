@@ -2,7 +2,6 @@ import "./CartItem.css";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import MyContext from "../../store/MyContext";
-import { Outlet } from "react-router-dom";
 
 const CartItem = (props) => {
   const cartCtx = useContext(MyContext);
@@ -21,7 +20,6 @@ const CartItem = (props) => {
   // const total_price = cartCtx.cartItems.reduce((total, item) => total + item.price, 0);
 
   return (
-    <>
       <div className="cart-items">
         <Button
           variant="secondary"
@@ -68,8 +66,6 @@ const CartItem = (props) => {
           Purchase
         </Button>
       </div>
-      <Outlet />
-    </>
   );
 };
 

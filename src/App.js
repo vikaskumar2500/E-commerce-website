@@ -1,6 +1,4 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import RootLayOut from "./Root/Root";
 import ProductItems from "./components/Layout/ProductItems";
 import CartItem from "./components/Cart/CartItem";
 import { v4 as uuidv4 } from "uuid";
@@ -8,6 +6,8 @@ import React, { useState } from "react";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
 import Header from "./components/Header/Header";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Contact from "./ContactUs/Contact";
 
 const App = () => {
   const [showCart, setShowCart] = useState(false);
@@ -50,42 +50,30 @@ const App = () => {
     setShowCart(show);
   };
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <RootLayOut onCart={cartButtonHandler} products={productsArr} />,
-      children: [
-        {
-          path: "/Home",
-          element: <Home />,
-        },
-
-        {
-          path: "/About",
-          element: <About />,
-        },
-      ],
-    },
-    {
-      path: "/Store",
-      element: (
-        <>
-          <Header onCart={cartButtonHandler} />
-          <ProductItems products={productsArr} />
-          {showCart && <CartItem onCancel={cartButtonHandler} />}
-        </>
-      ),
-    },
-  ]);
-
   return (
-    <RouterProvider router={router} />
-    // <div>
-    //   <Header onCart={cartButtonHandler} />
-    //   <h1>COLORS</h1>
-    //   <ProductItems products={productsArr} />
-    //   {showCart && <CartItem onCancel={cartButtonHandler} />}
-    // </div>
+    <Router>
+      <Header onCart={cartButtonHandler} />
+      <div>
+        <Switch>
+          <Route exact path="/">
+            <Home/>
+          </Route>
+          <Route path="/Store">
+            <ProductItems products={productsArr} />
+            {showCart && <CartItem onCancel={cartButtonHandler} />}
+          </Route>
+          <Route exact path="/about">
+            <About />
+          </Route>
+          <Route exact path="/Home">
+            <Home />
+          </Route>
+          <Route exact path="/Contact">
+            <Contact />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 

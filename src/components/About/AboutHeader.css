@@ -2,10 +2,11 @@
   position: relative;
   text-align: center;
   margin: 0;
-  padding: 0px;
   padding-bottom: 30px;
   background: #777;
   color: white;
+  padding-top: 2rem;
+
 }
 
 .about-header > h1 {

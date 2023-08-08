@@ -8,6 +8,7 @@ const Cart = (props) => {
 
   const cartBtnHandler = () => {
     props.onCart(true);
+    cartCtx.showContactHelper(false);
   };
 
   const totalCartNumber = cartCtx.cartItems.reduce(
@@ -16,14 +17,12 @@ const Cart = (props) => {
   );
 
   return (
-    <Button
-      variant="light"
-      className="cart-holder"
-      onClick={cartBtnHandler}
-    >
-      Cart
+    <div className={!cartCtx.showCartIcon ? "cart hidden" : "cart"}>
+      <Button variant="light" className="cart-holder" onClick={cartBtnHandler}>
+        Cart
+      </Button>
       <span className="cart-number">{totalCartNumber}</span>
-    </Button>
+    </div>
   );
 };
 

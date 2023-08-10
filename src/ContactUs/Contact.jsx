@@ -13,6 +13,7 @@ const Contact = () => {
     async (e) => {
       e.preventDefault();
       // console.log("Running");
+
       const formData = {
         name: enteredNameRef.current.value,
         email: enteredEmailRef.current.value,

@@ -1,6 +1,5 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import MyContext from "./MyContext";
-import { useState } from "react";
 
 const defaultState = {
   cartItems: [],
@@ -9,6 +8,7 @@ const defaultState = {
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
+    console.log(action.item.id);
     const cartItemIndex = state.cartItems.findIndex(
       (item) => item.id === action.item.id
     );
@@ -59,9 +59,9 @@ const CartProvider = (props) => {
     setShowCartIcon(show);
   };
 
-  const showContactHelper=(show)=> {
+  const showContactHelper = (show) => {
     setShowContact(show);
-  }
+  };
 
   return (
     <MyContext.Provider

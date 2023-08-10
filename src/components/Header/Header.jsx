@@ -29,8 +29,8 @@ const Header = (props) => {
       <ul className="list">
         <li>
           <NavLink
-            to="/"
-            activeClassName={isActive => (!isActive ? StyleSheet : "")}
+            to="/Home"
+            activeClassName='active'
             onClick={homeLinkHandler}
           >
             HOME
@@ -39,7 +39,6 @@ const Header = (props) => {
         <li>
           <NavLink
             to="/Store"
-            // activeClassName="active"
             onClick={storeLinkHandler}
           >
             STORE
@@ -48,7 +47,6 @@ const Header = (props) => {
         <li>
           <NavLink
             to="/About"
-            // activeClassName="active"
             onClick={aboutLinkHandler}
           >
             ABOUT
@@ -57,7 +55,6 @@ const Header = (props) => {
         <li>
           <NavLink
             to="/Contact"
-            // activeClassName="active"
             onClick={cantactHelper}
           >
             CONTACT US

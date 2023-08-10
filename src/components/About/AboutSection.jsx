@@ -1,12 +1,11 @@
 import "./AboutSection.css";
-import brandLogo from "../../assests/Band-image.png";
 
 const AboutSection = () => {
   return (
     <section className="about-section">
       <h1>ABOUT</h1>
       <div className="contents">
-        <img src={brandLogo} alt="not found" />
+        <img src='assests/band.png' alt="not found" />
         <p>
           Lorem ipsum carrots enhanced rebates. Excellent sayings of a man of
           sorrows, hates no prosecutors will unfold in the enduring of which

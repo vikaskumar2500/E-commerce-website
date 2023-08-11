@@ -37,8 +37,8 @@ const Header = (props) => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/store" onClick={storeLinkHandler}>
-            STORE
+          <NavLink to="/product" onClick={storeLinkHandler}>
+            PRODUCT
           </NavLink>
         </li>
         <li>

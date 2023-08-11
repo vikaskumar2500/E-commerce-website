@@ -74,10 +74,17 @@ const App = () => {
             <Redirect to="/home" />
           </Route>
 
-          <Route exact path="/store">
-            <Products products={productsArr} />
-            {showCart && <CartItem onCancel={cartButtonHandler} />}
-          </Route>
+          {myCtx.isLoggedIn && (
+            <Route exact path="/product">
+              <Products products={productsArr} />
+              {showCart && <CartItem onCancel={cartButtonHandler} />}
+            </Route>
+          )}
+          {!myCtx.isLoggedIn && (
+            <Route path="/product">
+              <Redirect to="/login" />
+            </Route>
+          )}
 
           <Route exact path="/about">
             <About />
@@ -97,7 +104,7 @@ const App = () => {
           )}
           {myCtx.isLoggedIn && (
             <Route exact path="/login">
-              <Redirect to='/Store'/>
+              <Redirect to="/product" />
             </Route>
           )}
         </Switch>

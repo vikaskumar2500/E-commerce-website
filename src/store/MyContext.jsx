@@ -9,6 +9,10 @@ const MyContext = React.createContext({
   showCartIconHandler: () => {},
   showContact: null,
   showContactHelper: () => {},
+  token: null,
+  login: () => {},
+  logout: () => {},
+  isLoggedIn: null,
 });
 
 export default MyContext;

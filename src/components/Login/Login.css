@@ -1,0 +1,40 @@
+.form-inline {
+  position: absolute;
+  background-color: rgb(44, 20, 67);
+  padding: 1rem 3rem;
+  width: 53vmin !important;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  top: 6rem;
+  left: 35%;
+} 
+.form-inline label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.forgot-password {
+  margin-bottom: 1rem;
+  margin-top: -0.8rem;
+  text-align: center;
+}
+
+.forgot-password a {
+  color: rgb(151, 76, 212);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.create-new-account button {
+  border: none;
+  padding: 0;
+  color: rgb(151, 76, 212) !important;
+  text-decoration: underline;
+}
+
+.create-new-account button:hover,
+.create-new-account button:active {
+  background: none;
+  border: none;
+}

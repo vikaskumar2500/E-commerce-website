@@ -29,34 +29,30 @@ const Header = (props) => {
       <ul className="list">
         <li>
           <NavLink
-            to="/Home"
-            activeClassName='active'
+            to="/home"
+            activeClassName="active"
             onClick={homeLinkHandler}
           >
             HOME
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to="/Store"
-            onClick={storeLinkHandler}
-          >
+          <NavLink to="/store" onClick={storeLinkHandler}>
             STORE
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to="/About"
-            onClick={aboutLinkHandler}
-          >
+          <NavLink to="/about" onClick={aboutLinkHandler}>
             ABOUT
           </NavLink>
         </li>
+
         <li>
-          <NavLink
-            to="/Contact"
-            onClick={cantactHelper}
-          >
+          <NavLink to="/login">LOGIN</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/contact" onClick={cantactHelper}>
             CONTACT US
           </NavLink>
         </li>

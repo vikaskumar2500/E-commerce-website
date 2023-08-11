@@ -56,7 +56,7 @@ const CartItem = (props) => {
         <hr />
         <div className="total-price">
           <h2>Total</h2>
-          <span>${cartCtx.totalPrice.toFixed(2)}</span>
+          <span>₹{cartCtx.totalPrice}</span>
         </div>
         <Button
           variant="primary"

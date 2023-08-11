@@ -46,6 +46,7 @@ const CartProvider = (props) => {
   const [cartState, dispatchedCart] = useReducer(cartReducer, defaultState);
   const [showCartIcon, setShowCartIcon] = useState(false);
   const [showContact, setShowContact] = useState(true);
+  const [token, setToken] = useState(null);
 
   const addCartItemHandler = (cartItem) => {
     dispatchedCart({ type: "ADD", item: cartItem });
@@ -63,6 +64,16 @@ const CartProvider = (props) => {
     setShowContact(show);
   };
 
+  // authentication part
+  const isLoggedIn = !!token;
+
+  const loginHandler=(token)=> {
+    setToken(token);
+  }
+  const logoutHandler=()=> {
+    setToken(null);
+  }
+
   return (
     <MyContext.Provider
       value={{
@@ -74,6 +85,10 @@ const CartProvider = (props) => {
         showCartIconHandler: showCartIconHandler,
         showContact: showContact,
         showContactHelper: showContactHelper,
+        token:token,
+        login:loginHandler,
+        logout:logoutHandler,
+        isLoggedIn:isLoggedIn,
       }}
     >
       {props.children}

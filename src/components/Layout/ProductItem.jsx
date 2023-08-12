@@ -1,7 +1,9 @@
 import { Button } from "react-bootstrap";
 import "./ProductItem.css";
 import MyContext from "../../store/MyContext";
-import { useContext, useState, useEffect,useCallback } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
+import React from "react";
+import axios from "axios";
 
 const ProductItem = (props) => {
   const [currImage, setCurrImage] = useState(`${props.img}/hoodie${1}.webp`);
@@ -10,21 +12,57 @@ const ProductItem = (props) => {
 
   const { product } = props;
 
-  const buttonHandler = useCallback((item) => {
-    cartCtx.addCartItem({
-      ...item,
-      amount: 1,
-    });
-  }, [cartCtx]);
+  let getLoginData = JSON.parse(localStorage.getItem(cartCtx.token));
+  const filteredEmail = getLoginData.email.replace("@", "").replace(".", "");
+
+  const buttonHandler = useCallback(
+    (item) => {
+      cartCtx.addCartItem({
+        ...item,
+        amount: 1,
+      });
+
+      const Object = {
+        ...product,
+        amount: 1,
+      };
+      // console.log(filteredEmail);
+      axios
+        .post(
+          `https://crudcrud.com/api/32851ad95abb43c4b86c9d8004c19c68/cart${filteredEmail}`,
+           Object 
+        )
+        .then((res) => {
+          // console.log(res);
+          if (res.status >= 200 && res.status < 300) {
+            return res.data;
+          } else {
+            throw new Error(res.data.error);
+          }
+        })
+        .then((data) => {
+         // console.log(data);
+         return;
+        })
+        .catch((error) => alert(error.message));
+    },
+    [cartCtx,product, filteredEmail]
+  );
+
+  // useEffect(() => {}, [filteredEmail]);
+
 
   useEffect(() => {
     if (!sideImgVisible) setCurrImage(`${props.img}/hoodie${1}.webp`);
   }, [props.img, sideImgVisible]);
- 
-  const sideImgHandler = useCallback((imageNum) => {
-    // console.log('Running');
-    setCurrImage(`${props.img}/hoodie${imageNum}.webp`);
-  },[props.img]);
+
+  const sideImgHandler = useCallback(
+    (imageNum) => {
+      // console.log('Running');
+      setCurrImage(`${props.img}/hoodie${imageNum}.webp`);
+    },
+    [props.img]
+  );
 
   const currImgHandler = useCallback(() => {
     setSideImgVisible((prev) => !prev);

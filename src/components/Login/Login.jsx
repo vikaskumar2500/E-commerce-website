@@ -55,10 +55,13 @@ const Login = (props) => {
       authCtx.login(token);
 
       // storing local storage
-      localStorage.setItem(token, {
-        email: enteredEmailRef,
-        password: enteredPasswordRef,
-      });
+      localStorage.setItem(
+        token,
+        JSON.stringify({
+          email: enteredEmailRef,
+          password: enteredPasswordRef,
+        })
+      );
 
       emailInputRef.current.value = "";
       passwordInputRef.current.value = "";

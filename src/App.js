@@ -1,7 +1,6 @@
 import "./App.css";
 import CartItem from "./components/Cart/CartItem";
-import { v4 as uuidv4 } from "uuid";
-import React, { useMemo, useState, useContext } from "react";
+import React, { useMemo, useState, useContext, useEffect } from "react";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
 import Header from "./components/Header/Header";
@@ -15,6 +14,7 @@ import Contact from "./ContactUs/Contact";
 import Products from "./components/Layout/Products";
 import Login from "./components/Login/Login";
 import MyContext from "./store/MyContext";
+import axios from "axios";
 
 const App = () => {
   const [showCart, setShowCart] = useState(false);
@@ -23,7 +23,7 @@ const App = () => {
   const productsArr = useMemo(
     () => [
       {
-        id: uuidv4(),
+        id: 1,
         rate: (Math.random() * 3 + 2).toFixed(1),
         company: "Smartees",
         title: "Men Full Sleeve Printed Hooded",
@@ -32,7 +32,7 @@ const App = () => {
       },
 
       {
-        id: uuidv4(),
+        id: 2,
         rate: (Math.random() * 3 + 2).toFixed(1),
         company: "Fastoche",
         title: "Men Full Sleeve Printed Hooded",
@@ -41,7 +41,7 @@ const App = () => {
       },
 
       {
-        id: uuidv4(),
+        id: 3,
         rate: (Math.random() * 3 + 2).toFixed(1),
         company: "Alan Jones",
         title: "Men Full Sleeve Solid Hooded",
@@ -50,7 +50,7 @@ const App = () => {
       },
 
       {
-        id: uuidv4(),
+        id: 4,
         rate: (Math.random() * 3 + 2).toFixed(1),
         company: "Kay Dee",
         title: "Men Colorblock Hooded",
@@ -64,6 +64,32 @@ const App = () => {
   const cartButtonHandler = (show) => {
     setShowCart(show);
   };
+
+  useEffect(() => {
+    const [getToken] = Object.keys(localStorage);
+    if (getToken) myCtx.login(getToken);
+    let getLoginData = JSON.parse(localStorage.getItem(myCtx.token));
+    let filteredEmail = "";
+    if (getLoginData)
+      filteredEmail = getLoginData.email.replace("@", "").replace(".", "");
+    axios(
+      `https://crudcrud.com/api/32851ad95abb43c4b86c9d8004c19c68/cart${filteredEmail}`
+    )
+      .then((res) => res.data)
+      .then((data) => {
+        // const productListArray = [];
+        for (let key in data) {
+          const productItem = data[key];
+          myCtx.addCartItem({ ...productItem });
+        }
+        // console.log(productListArray);
+        // myCtx.addCartItem(productListArray);
+      })
+      .catch((error) => alert(error.message));
+  }, [myCtx.isLoggedIn]);
+  setTimeout(() => {
+    localStorage.clear();
+  }, 10e5);
 
   return (
     <Router>

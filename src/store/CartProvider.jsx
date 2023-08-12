@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import React, { useReducer, useState } from "react";
 import MyContext from "./MyContext";
 
 const defaultState = {
@@ -8,7 +8,7 @@ const defaultState = {
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    console.log(action.item.id);
+    // console.log(action.item.id);
     const cartItemIndex = state.cartItems.findIndex(
       (item) => item.id === action.item.id
     );
@@ -73,6 +73,8 @@ const CartProvider = (props) => {
   const logoutHandler=()=> {
     setToken(null);
   }
+  
+  // console.log(cartState.cartItems);
 
   return (
     <MyContext.Provider

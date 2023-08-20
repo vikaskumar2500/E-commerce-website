@@ -1,9 +1,9 @@
 import { Button } from "react-bootstrap";
 import "./ProductItem.css";
 import MyContext from "../../store/MyContext";
-import { useContext, useState, useEffect, useCallback } from "react";
-import React from "react";
-import axios from "axios";
+import { useContext, useState, useCallback } from "react";
+
+const url = "https://ecommerce-website-274ca-default-rtdb.firebaseio.com/";
 
 const ProductItem = (props) => {
   const [currImage, setCurrImage] = useState(`${props.img}/hoodie${1}.webp`);
@@ -12,53 +12,82 @@ const ProductItem = (props) => {
 
   const { product } = props;
 
-  let getLoginData = JSON.parse(localStorage.getItem(cartCtx.token));
-  const filteredEmail = getLoginData.email.replace("@", "").replace(".", "");
+  const buttonHandler = async (item) => {
+    const product = {
+      ...item,
+      amount: 1,
+    };
 
-  const buttonHandler = useCallback(
-    (item) => {
-      cartCtx.addCartItem({
-        ...item,
-        amount: 1,
-      });
+    const getLoginData = JSON.parse(localStorage.getItem(cartCtx.token));
 
-      const Object = {
-        ...product,
-        amount: 1,
-      };
-      // console.log(filteredEmail);
-      axios
-        .post(
-          `https://crudcrud.com/api/32851ad95abb43c4b86c9d8004c19c68/cart${filteredEmail}`,
-           Object 
-        )
-        .then((res) => {
-          // console.log(res);
-          if (res.status >= 200 && res.status < 300) {
-            return res.data;
-          } else {
-            throw new Error(res.data.error);
+    if (getLoginData) {
+      const filteredEmail = getLoginData.email
+        .replace("@", "")
+        .replace(".", "");
+      // fetching all the data so that we can control the amount
+      try {
+        const resGet = await fetch(`${url}/cart/${filteredEmail}.json`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const cartItems = await resGet.json();
+        if (!resGet.ok) throw new Error(cartItems.error.message);
+        // console.log(cartItems);
+        let targetKey = null;
+        for(let key in cartItems) {
+          if(cartItems[key].id === product.id) {
+            targetKey = key;
+            break;
           }
-        })
-        .then((data) => {
-         // console.log(data);
-         return;
-        })
-        .catch((error) => alert(error.message));
-    },
-    [cartCtx,product, filteredEmail]
-  );
+        }
+        // console.log(targetKey);
+        if (targetKey !== null) {
+          product.amount += cartItems[targetKey].amount;
+          const resPut = await fetch(
+            `${url}/cart/${filteredEmail}/${targetKey}.json`,
+            {
+              method: "PUT",
+              body: JSON.stringify({ ...product }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await resPut.json();
+          // console.log("ProductItem put", data);
+          if (!resPut.ok) throw new Error(data.error.message);
+        } else {
+          const resPost = await fetch(`${url}/cart/${filteredEmail}.json`, {
+            method: "POST",
+            body: JSON.stringify({ ...product }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await resPost.json();
+          // console.log("ProductItem post", data);
+          if (!resPost.ok) throw new Error(data.error.message);
+        }
 
-  // useEffect(() => {}, [filteredEmail]);
+        // getting updated data
+        const resUpdatedGet = await fetch(`${url}/cart/${filteredEmail}.json`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-
-  useEffect(() => {
-    if (!sideImgVisible) setCurrImage(`${props.img}/hoodie${1}.webp`);
-  }, [props.img, sideImgVisible]);
+        const updateCartItems = await resUpdatedGet.json();
+        if (!resUpdatedGet.ok) throw new Error(cartItems.error.message);
+          cartCtx.addCartItem(updateCartItems);
+        // console.log(updateCartItems);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  };
 
   const sideImgHandler = useCallback(
     (imageNum) => {
-      // console.log('Running');
       setCurrImage(`${props.img}/hoodie${imageNum}.webp`);
     },
     [props.img]
@@ -66,14 +95,14 @@ const ProductItem = (props) => {
 
   const currImgHandler = useCallback(() => {
     setSideImgVisible((prev) => !prev);
-  }, [setSideImgVisible]);
+  }, []);
 
   const title = sideImgVisible
-    ? "again click to close images"
-    : "for more images click this";
+    ? "Click to close images"
+    : "For more images click here";
 
   return (
-    <li key={product.id} className="product-item">
+    <li className="product-item">
       <div className="main">
         {sideImgVisible && (
           <div className="sub-images">
@@ -82,17 +111,17 @@ const ProductItem = (props) => {
                 key={imageNum}
                 src={`${props.img}/hoodie${imageNum}.webp`}
                 alt="not found"
-                onMouseOverCapture={sideImgHandler.bind(null, imageNum)}
+                onMouseOverCapture={() => sideImgHandler(imageNum)}
               />
             ))}
           </div>
         )}
-        <div className=" images">
+        <div className="images">
           <div className="current-image">
             <Button variant="" onClick={currImgHandler} className="curr-button">
               <img
                 src={currImage}
-                alt="images not found"
+                alt="Images not found"
                 className="main-image"
                 title={title}
               />
@@ -107,13 +136,13 @@ const ProductItem = (props) => {
                 <span className="price">₹{product.price}</span>
                 <span className="rating">
                   {props.rate}
-                  <img src="assests/star.svg" alt="not found" />
+                  <img src="assets/star.svg" alt="Star" />
                 </span>
               </div>
             </div>
             <Button
               className="btn cart-button"
-              onClick={buttonHandler.bind(null, product)}
+              onClick={() => buttonHandler(product)}
             >
               Add To Cart
             </Button>

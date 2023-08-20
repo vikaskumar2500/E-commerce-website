@@ -1,5 +1,11 @@
 .cart {
-  margin-left:80vw; 
+  margin-left: 80vw;
+  /* border: 2px solid red; */
+  margin-bottom: 1rem;
+  position: fixed;
+  right: 1rem;
+  top: 0.3rem;
+  z-index: 1;
 }
 .hidden {
   display: none;

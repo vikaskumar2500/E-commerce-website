@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react"; // Added useEffect import
 import MyContext from "./MyContext";
 
 const defaultState = {
@@ -7,74 +7,101 @@ const defaultState = {
 };
 
 const cartReducer = (state, action) => {
-  if (action.type === "ADD") {
-    // console.log(action.item.id);
-    const cartItemIndex = state.cartItems.findIndex(
-      (item) => item.id === action.item.id
+  if (action.type === "SET_CART_ITEMS") {
+    let totalPrice = 0;
+    let cartItems=[];
+    for (let key in action.items) {
+      cartItems.unshift(action.items[key]);
+      totalPrice += action.items[key].price * action.items[key].amount;
+    }
+    return {
+      cartItems: cartItems,
+      totalPrice: totalPrice,
+    };
+  } else if (action.type === "DELETE") {
+    const updatedCartItems = state.cartItems.filter(
+      (cartItem) => cartItem.id !== action.id
     );
 
-    if (cartItemIndex !== -1) {
-      state.cartItems[cartItemIndex].amount += 1;
-      return {
-        cartItems: state.cartItems,
-        totalPrice: state.totalPrice + action.item.price,
-      };
-    } else {
-      return {
-        cartItems: [action.item, ...state.cartItems],
-        totalPrice: state.totalPrice + action.item.price,
-      };
-    }
-  } else if (action.type === "DELETE") {
-    const cartItemIndex = state.cartItems.findIndex(
-      (item) => item.id === action.id
+    const deletedCartItem = state.cartItems.find(
+      (cartItem) => cartItem.id === action.id
     );
 
     return {
-      cartItems: state.cartItems.filter(
-        (cartItem) => cartItem.id !== action.id
-      ),
+      cartItems: updatedCartItems,
       totalPrice:
-        state.totalPrice -
-        state.cartItems[cartItemIndex].price *
-          state.cartItems[cartItemIndex].amount,
+        state.totalPrice - deletedCartItem.price * deletedCartItem.amount,
     };
-  } else return defaultState;
+  } else {
+    return defaultState;
+  }
 };
 
 const CartProvider = (props) => {
-  const [cartState, dispatchedCart] = useReducer(cartReducer, defaultState);
-  const [showCartIcon, setShowCartIcon] = useState(false);
-  const [showContact, setShowContact] = useState(true);
+  const [cartState, dispatchCart] = useReducer(cartReducer, defaultState); // Changed dispatchedCart to dispatchCart
   const [token, setToken] = useState(null);
 
-  const addCartItemHandler = (cartItem) => {
-    dispatchedCart({ type: "ADD", item: cartItem });
+  useEffect(() => {});
+
+  useEffect(() => {
+    // Fetch cart items when token changes
+    if (token) {
+      async function fetchCartItems() {
+        try {
+          const getLoginData = JSON.parse(localStorage.getItem(token));
+          // console.log(getLoginData);
+          if (getLoginData) {
+            const filteredEmail = getLoginData.email
+              .replace("@", "")
+              .replace(".", "");
+            const response = await fetch(
+              `https://ecommerce-website-274ca-default-rtdb.firebaseio.com/cart/${filteredEmail}.json`,
+              {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+            const cartItems = await response.json();
+            if(!response.ok)  throw new Error(response.data.error);
+            // Added a SET_CART_ITEMS action type
+            // console.log(cartItems);
+            dispatchCart({ type: "SET_CART_ITEMS", items: cartItems });
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+      fetchCartItems();
+    }
+  }, [token]);
+
+  const addCartItemHandler = (cartItems) => {
+    dispatchCart({ type: "SET_CART_ITEMS", items: cartItems });
   };
 
-  const deleteCartItemHandler = (id) => {
-    dispatchedCart({ type: "DELETE", id: id });
+  const deleteCartItemHandler = async (id, _id) => {
+    dispatchCart({ type: "DELETE", id: id });
   };
 
-  const showCartIconHandler = (show) => {
-    setShowCartIcon(show);
-  };
-
-  const showContactHelper = (show) => {
-    setShowContact(show);
-  };
-
-  // authentication part
-  const isLoggedIn = !!token;
-
-  const loginHandler=(token)=> {
+  const loginHandler = (token) => {
     setToken(token);
-  }
-  const logoutHandler=()=> {
+  };
+
+  const logoutHandler = () => {
     setToken(null);
-  }
-  
-  // console.log(cartState.cartItems);
+    dispatchCart({ type: "RESET" }); // Added a RESET action type
+  };
+
+  let isLoggedIn = !!token;
+
+  let [getToken] = Object.keys(localStorage);
+  isLoggedIn = !!getToken;
+
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.clear();
+    }, 3e3);
+  }, []);
 
   return (
     <MyContext.Provider
@@ -83,14 +110,10 @@ const CartProvider = (props) => {
         totalPrice: cartState.totalPrice,
         addCartItem: addCartItemHandler,
         deleteCartItem: deleteCartItemHandler,
-        showCartIcon: showCartIcon,
-        showCartIconHandler: showCartIconHandler,
-        showContact: showContact,
-        showContactHelper: showContactHelper,
-        token:token,
-        login:loginHandler,
-        logout:logoutHandler,
-        isLoggedIn:isLoggedIn,
+        token: token,
+        login: loginHandler,
+        logout: logoutHandler,
+        isLoggedIn: isLoggedIn,
       }}
     >
       {props.children}

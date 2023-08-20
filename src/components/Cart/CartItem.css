@@ -1,5 +1,5 @@
 .cart-items {
-  position: absolute;
+  position: fixed;
   max-width: inherit;
   box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.3);
   right: 2.3rem; 
@@ -7,7 +7,7 @@
   background-color: white;
   animation: slideDown 300ms ease-out;
   width: 60vmin;
-  
+  object-fit: cover;
 }
 
 @keyframes slideDown {
@@ -27,6 +27,8 @@
   justify-content: space-between;
   align-items: center;
   margin: 1rem 0;
+  object-fit: cover;
+
 }
 .cart-image {
   display: flex;
@@ -50,14 +52,12 @@
 }
 
 .cancel {
-  margin-left: 25rem;
-  /*position: relative;
-  right: 0;
-  top: 0;
-   */
+  
+  position: absolute;
   text-align: right;
   margin-top: 1rem;
   margin-right: 1rem;
+  right: 2px;
 }
 
 .total-price {
@@ -69,8 +69,12 @@
 }
 
 .purchaseBtn {
+ 
+  position: relative;
+  right: -70%;
   margin: 1rem;
-  margin-left: 78%;
+  
+  
 }
 
 .cart-quantity > input {
@@ -98,7 +102,7 @@ hr {
 }
 
 .cart-list {
-  max-height: 15rem;
+  max-height: 25rem;
   overflow: scroll;
 }
 
@@ -112,3 +116,4 @@ hr {
   color: brown;
   text-align: center;
 }
+

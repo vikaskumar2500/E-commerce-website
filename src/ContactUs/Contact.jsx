@@ -1,15 +1,20 @@
 import { Button, Form } from "react-bootstrap";
 import "./Contact.css";
 import React, { useRef, useCallback, useState } from "react";
+import Feedback from "./Feedback";
+
 const url =
   "https://create-contact-page-default-rtdb.asia-southeast1.firebasedatabase.app/movies";
 
 const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isFeedback, setIsFeedback] = useState(false);
+  const [email, setEmail] = useState("");
   const enteredNameRef = useRef();
   const enteredEmailRef = useRef();
   const enteredPhoneRef = useRef();
+
+  
 
   const formSubmitHandler = useCallback(
     async (e) => {
@@ -21,7 +26,7 @@ const Contact = () => {
         email: enteredEmailRef.current.value,
         phone: enteredPhoneRef.current.value,
       };
-
+      setEmail(enteredEmailRef.current.value);
       // making a POST request
       try {
         const responsePost = await fetch(`${url}.json`, {
@@ -33,17 +38,12 @@ const Contact = () => {
         });
         const data = await responsePost.json();
         if (!responsePost.ok) throw new Error(data.error.message);
-
-        setIsComplete(true);
+        setIsFeedback(true);
         // reseting value
         enteredNameRef.current.value = "";
         enteredEmailRef.current.value = "";
         enteredPhoneRef.current.value = "";
         setIsLoading(false);
-
-        setTimeout(() => {
-          setIsComplete(false);
-        }, 3000);
       } catch (error) {
         setIsLoading(false);
         alert(error.message);
@@ -54,7 +54,7 @@ const Contact = () => {
 
   return (
     <React.Fragment>
-      {!isComplete && (
+      {!isFeedback && (
         <Form className="contact" onSubmit={formSubmitHandler}>
           <Form.Group className="mb-1" controlId="formBasicName">
             <Form.Label>Name</Form.Label>
@@ -95,8 +95,11 @@ const Contact = () => {
           {isLoading && <p>Sending request...</p>}
         </Form>
       )}
-      {isComplete && (
-        <h2 className="greeting">Thank you For Contacting us...</h2>
+      {isFeedback && (
+        <Feedback
+          email = {email}
+          onFeedback={(feedback) => setIsFeedback(feedback)}
+        />
       )}
     </React.Fragment>
   );

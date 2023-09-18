@@ -18,71 +18,70 @@ const ProductItem = (props) => {
       amount: 1,
     };
 
-    const getLoginData = JSON.parse(localStorage.getItem(cartCtx.token));
+    const email = localStorage.getItem("email");
 
-    if (getLoginData) {
-      const filteredEmail = getLoginData.email
-        .replace("@", "")
-        .replace(".", "");
-      // fetching all the data so that we can control the amount
-      try {
-        const resGet = await fetch(`${url}/cart/${filteredEmail}.json`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+    const filteredEmail = email
+      .replace("@", "")
+      .replaceAll(".", "")
+      .replaceAll("_", "");
+    // fetching all the data so that we can control the amount
+    try {
+      const resGet = await fetch(`${url}/cart/${filteredEmail}.json`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
-        const cartItems = await resGet.json();
-        if (!resGet.ok) throw new Error(cartItems.error.message);
-        // console.log(cartItems);
-        let targetKey = null;
-        for(let key in cartItems) {
-          if(cartItems[key].id === product.id) {
-            targetKey = key;
-            break;
-          }
+      const cartItems = await resGet.json();
+      if (!resGet.ok) throw new Error(cartItems.error.message);
+      // console.log(cartItems);
+      let targetKey = null;
+      for (let key in cartItems) {
+        if (cartItems[key].id === product.id) {
+          targetKey = key;
+          break;
         }
-        // console.log(targetKey);
-        if (targetKey !== null) {
-          product.amount += cartItems[targetKey].amount;
-          const resPut = await fetch(
-            `${url}/cart/${filteredEmail}/${targetKey}.json`,
-            {
-              method: "PUT",
-              body: JSON.stringify({ ...product }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const data = await resPut.json();
-          // console.log("ProductItem put", data);
-          if (!resPut.ok) throw new Error(data.error.message);
-        } else {
-          const resPost = await fetch(`${url}/cart/${filteredEmail}.json`, {
-            method: "POST",
+      }
+      // console.log(targetKey);
+      if (targetKey !== null) {
+        product.amount += cartItems[targetKey].amount;
+        const resPut = await fetch(
+          `${url}/cart/${filteredEmail}/${targetKey}.json`,
+          {
+            method: "PUT",
             body: JSON.stringify({ ...product }),
             headers: {
               "Content-Type": "application/json",
             },
-          });
-          const data = await resPost.json();
-          // console.log("ProductItem post", data);
-          if (!resPost.ok) throw new Error(data.error.message);
-        }
-
-        // getting updated data
-        const resUpdatedGet = await fetch(`${url}/cart/${filteredEmail}.json`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
+          }
+        );
+        const data = await resPut.json();
+        // console.log("ProductItem put", data);
+        if (!resPut.ok) throw new Error(data.error.message);
+      } else {
+        const resPost = await fetch(`${url}/cart/${filteredEmail}.json`, {
+          method: "POST",
+          body: JSON.stringify({ ...product }),
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-
-        const updateCartItems = await resUpdatedGet.json();
-        if (!resUpdatedGet.ok) throw new Error(cartItems.error.message);
-          cartCtx.addCartItem(updateCartItems);
-        // console.log(updateCartItems);
-      } catch (error) {
-        alert(error.message);
+        const data = await resPost.json();
+        // console.log("ProductItem post", data);
+        if (!resPost.ok) throw new Error(data.error.message);
       }
+
+      // getting updated data
+      const resUpdatedGet = await fetch(`${url}/cart/${filteredEmail}.json`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const updateCartItems = await resUpdatedGet.json();
+      if (!resUpdatedGet.ok) throw new Error(cartItems.error.message);
+      cartCtx.addCartItem(updateCartItems);
+      // console.log(updateCartItems);
+    } catch (error) {
+      alert(error.message);
     }
   };
 

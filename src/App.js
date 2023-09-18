@@ -9,7 +9,7 @@ import {
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";  
+} from "react-router-dom";
 import Contact from "./ContactUs/Contact";
 import Products from "./components/Layout/Products";
 import Login from "./components/Login/Login";
@@ -17,7 +17,7 @@ import MyContext from "./store/MyContext";
 
 const App = () => {
   const [showCart, setShowCart] = useState(false);
-  const myCtx = useContext(MyContext);
+  const { isLoggedIn } = useContext(MyContext);
 
   const productsArr = useMemo(
     () => [
@@ -73,13 +73,13 @@ const App = () => {
             <Redirect to="/home" />
           </Route>
 
-          {myCtx.isLoggedIn && (
+          {isLoggedIn && (
             <Route exact path="/product">
               <Products products={productsArr} onCart={cartButtonHandler} />
               {showCart && <CartItem onCancel={cartButtonHandler} />}
             </Route>
           )}
-          {!myCtx.isLoggedIn && (
+          {!isLoggedIn && (
             <Route path="/product">
               <Redirect to="/login" />
             </Route>
@@ -96,16 +96,13 @@ const App = () => {
           <Route exact path="/contact">
             <Contact />
           </Route>
-          {!myCtx.isLoggedIn && (
-            <Route exact path="/login">
-              <Login />
-            </Route>
-          )}
-          {myCtx.isLoggedIn && (
-            <Route exact path="/login">
-              <Redirect to="/product" />
-            </Route>
-          )}
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route path='/*'>
+            <Login />
+          </Route>
+
         </Switch>
       </div>
     </Router>

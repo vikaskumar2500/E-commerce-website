@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from "react"; // Added useEffect import
+import React, { useReducer, useState, useEffect } from "react";
 import MyContext from "./MyContext";
 
 const defaultState = {
@@ -9,7 +9,7 @@ const defaultState = {
 const cartReducer = (state, action) => {
   if (action.type === "SET_CART_ITEMS") {
     let totalPrice = 0;
-    let cartItems=[];
+    let cartItems = [];
     for (let key in action.items) {
       cartItems.unshift(action.items[key]);
       totalPrice += action.items[key].price * action.items[key].amount;
@@ -38,41 +38,35 @@ const cartReducer = (state, action) => {
 };
 
 const CartProvider = (props) => {
-  const [cartState, dispatchCart] = useReducer(cartReducer, defaultState); // Changed dispatchedCart to dispatchCart
-  const [token, setToken] = useState(null);
+  const [cartState, dispatchCart] = useReducer(cartReducer, defaultState);
 
-  useEffect(() => {});
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
-    // Fetch cart items when token changes
-    if (token) {
-      async function fetchCartItems() {
-        try {
-          const getLoginData = JSON.parse(localStorage.getItem(token));
-          // console.log(getLoginData);
-          if (getLoginData) {
-            const filteredEmail = getLoginData.email
-              .replace("@", "")
-              .replace(".", "");
-            const response = await fetch(
-              `https://ecommerce-website-274ca-default-rtdb.firebaseio.com/cart/${filteredEmail}.json`,
-              {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-              }
-            );
-            const cartItems = await response.json();
-            if(!response.ok)  throw new Error(response.data.error);
-            // Added a SET_CART_ITEMS action type
-            // console.log(cartItems);
-            dispatchCart({ type: "SET_CART_ITEMS", items: cartItems });
+    async function fetchCartItems() {
+      try {
+        const email = localStorage.getItem("email");
+        const filteredEmail = email
+          ?.replace("@", "")
+          .replaceAll(".", "")
+          .replaceAll("_", "");
+        const response = await fetch(
+          `https://ecommerce-website-274ca-default-rtdb.firebaseio.com/cart/${filteredEmail}.json`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
           }
-        } catch (error) {
-          alert(error.message);
-        }
+        );
+        const cartItems = await response.json();
+        if (!response.ok) throw new Error(response.data.error);
+        // Added a SET_CART_ITEMS action type
+        // console.log(cartItems);
+        dispatchCart({ type: "SET_CART_ITEMS", items: cartItems });
+      } catch (error) {
+        alert(error.message);
       }
-      fetchCartItems();
     }
+    fetchCartItems();
   }, [token]);
 
   const addCartItemHandler = (cartItems) => {
@@ -89,19 +83,12 @@ const CartProvider = (props) => {
 
   const logoutHandler = () => {
     setToken(null);
-    dispatchCart({ type: "RESET" }); // Added a RESET action type
   };
 
   let isLoggedIn = !!token;
 
   let [getToken] = Object.keys(localStorage);
   isLoggedIn = !!getToken;
-
-  useEffect(() => {
-    setTimeout(() => {
-      localStorage.clear();
-    }, 3e3);
-  }, []);
 
   return (
     <MyContext.Provider

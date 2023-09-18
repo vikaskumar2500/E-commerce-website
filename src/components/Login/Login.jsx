@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 import "./Login.css";
 import MyContext from "../../store/MyContext";
@@ -10,6 +10,7 @@ const Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const history = useHistory();
 
   const authCtx = useContext(MyContext);
 
@@ -40,32 +41,23 @@ const Login = (props) => {
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) {
-        const data = await response.json();
-        setIsLoading(false);
-        // console.log(data);
-
-        throw new Error(data.error.message);
-      }
-      const data = await response.json();
       setIsLoading(false);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error.message);
+
       // console.log(data);
       const token = data.idToken;
-
       authCtx.login(token);
 
       // storing local storage
-      localStorage.setItem(
-        token,
-        JSON.stringify({
-          email: enteredEmailRef,
-          password: enteredPasswordRef,
-        })
-      );
+      localStorage.setItem("token", token);
+      localStorage.setItem('email', emailInputRef.current.value);
 
       emailInputRef.current.value = "";
       passwordInputRef.current.value = "";
+      history.push("/product");
     } catch (error) {
+      setIsLoading(false);
       alert(error.message);
     }
   };
